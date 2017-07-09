@@ -5,6 +5,11 @@ const querystring = require('querystring');
 
 const server = http.createServer((request, response) => {
   console.log(request);
+  request.setEncoding('utf8');
+  request.on('data', (chunk)=>{
+    let requestBody = chunk;
+    console.log(chunk);
+  });
   response.write('something', 'utf8', () =>{
     response.end();
     });
