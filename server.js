@@ -4,8 +4,7 @@ const  fs = require('fs');
 const querystring = require('querystring');
 
 const server = http.createServer((request, response) => {
-
-  console.log(request.method);
+  console.log(request);
   response.write('something', 'utf8', () =>{
     response.end();
     });
