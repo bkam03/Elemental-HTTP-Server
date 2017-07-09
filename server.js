@@ -12,7 +12,6 @@ const server = http.createServer((request, response) => {
     body.push(chunk);
   }).on('end', () =>{
   var elements = querystring.parse(body[0]);
-  console.log(elements);
   var elementWebPage = `<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -28,10 +27,16 @@ const server = http.createServer((request, response) => {
 </body>
 </html>`;
 var fileName = request.url;
-fs.writeFile(`./public/${fileName}`, elementWebPage, () =>{
-
-});
+fs.open(`./public/${fileName}`, 'r', (err) => {
+  if(err){
+    console.log(err);
+    fs.writeFile(`./public/${fileName}`, elementWebPage, () =>{
+    });
+  }else{
+    console.log('file already exists');
+    }
   });
+ });
 
 
 
