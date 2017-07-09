@@ -10,11 +10,27 @@ const server = http.createServer((request, response) => {
   let body = [];
   request.on('data', (chunk) => {
     body.push(chunk);
-     // console.log(body);
   }).on('end', () =>{
-    console.log(querystring.parse(body[0]));
+  var elements = querystring.parse(body[0]);
+  console.log(elements);
+  var elementWebPage = `<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Elements - ${elements.elementName}</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <h1>${elementName}</h1>
+  <h2>${elementSymbol}</h2>
+  <h3>${elementAtomicNumber}</h3>
+  <p>${elementDescription}</p>
+  <p><a href="/">back</a></p>
+</body>
+</html>`;
   });
   console.log(request.url);
+
+
   // response.write('something', 'utf8', () =>{
   //   response.end();
   //   });
