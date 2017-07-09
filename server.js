@@ -20,15 +20,19 @@ const server = http.createServer((request, response) => {
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-  <h1>${elementName}</h1>
-  <h2>${elementSymbol}</h2>
-  <h3>${elementAtomicNumber}</h3>
-  <p>${elementDescription}</p>
+  <h1>${elements.elementName}</h1>
+  <h2>${elements.elementSymbol}</h2>
+  <h3>${elements.elementAtomicNumber}</h3>
+  <p>${elements.elementDescription}</p>
   <p><a href="/">back</a></p>
 </body>
 </html>`;
+var fileName = request.url;
+fs.writeFile(`./public/${fileName}`, elementWebPage, () =>{
+
+});
   });
-  console.log(request.url);
+
 
 
   // response.write('something', 'utf8', () =>{
