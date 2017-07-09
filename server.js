@@ -2,17 +2,22 @@
 const http = require('http');
 const  fs = require('fs');
 const querystring = require('querystring');
+const process = require('process');
 
 const server = http.createServer((request, response) => {
-  console.log(request);
+  const { headers, method, url } = request;
   request.setEncoding('utf8');
-  request.on('data', (chunk)=>{
-    let requestBody = chunk;
-    console.log(chunk);
+  let body = [];
+  request.on('data', (chunk) => {
+    body.push(chunk);
+     // console.log(body);
+  }).on('end', () =>{
+    console.log(querystring.parse(body[0]));
   });
-  response.write('something', 'utf8', () =>{
-    response.end();
-    });
+  console.log(request.url);
+  // response.write('something', 'utf8', () =>{
+  //   response.end();
+  //   });
 
 });
 
