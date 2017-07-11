@@ -11,38 +11,38 @@ const server = http.createServer((request, response) => {
   request.on('data', (chunk) => {
     body.push(chunk);
   }).on('end', () =>{
-  var elements = querystring.parse(body[0]);
-  var elementWebPage = `<!DOCTYPE html><html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>The Elements - ${elements.elementName}</title>
-  <link rel="stylesheet" href="/css/styles.css">
-</head>
-<body>
-  <h1>${elements.elementName}</h1>
-  <h2>${elements.elementSymbol}</h2>
-  <h3>${elements.elementAtomicNumber}</h3>
-  <p>${elements.elementDescription}</p>
-  <p><a href="/">back</a></p>
-</body>
-</html>`;
-var fileName = request.url;
-fs.open(`./public/${fileName}`, 'r', (err) => {
-  if(err){
-    console.log(err);
-    fs.writeFile(`./public/${fileName}`, elementWebPage, () =>{
+    var elements = querystring.parse(body[0]);
+    var elementWebPage = `<!DOCTYPE html><html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>The Elements - ${elements.elementName}</title>
+      <link rel="stylesheet" href="/css/styles.css">
+    </head>
+    <body>
+      <h1>${elements.elementName}</h1>
+      <h2>${elements.elementSymbol}</h2>
+      <h3>${elements.elementAtomicNumber}</h3>
+      <p>${elements.elementDescription}</p>
+      <p><a href="/">back</a></p>
+    </body>
+    </html>`;
+    var fileName = request.url;
+    fs.open(`./public/${fileName}`, 'r', (err) => {
+      if(err){
+        console.log(err);
+        fs.writeFile(`./public/${fileName}`, elementWebPage, () =>{
+        });
+      }else{
+        console.log('file already exists');
+      }
     });
-  }else{
-    console.log('file already exists');
-    }
   });
- });
 
 
 
-  // response.write('something', 'utf8', () =>{
-  //   response.end();
-  //   });
+  response.write('something', 'utf8', () =>{
+    response.end();
+  });
 
 });
 
