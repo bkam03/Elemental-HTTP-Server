@@ -11,6 +11,9 @@ const server = http.createServer((request, response) => {
   request.on('data', (chunk) => {
     body.push(chunk);
   }).on('end', () =>{
+
+    //add branching here for different methods and enclose bottom under POST
+
     var elements = querystring.parse(body[0]);
     var elementWebPage = `<!DOCTYPE html><html lang="en">
     <head>
@@ -38,11 +41,11 @@ const server = http.createServer((request, response) => {
     });
   });
 
-
-
-  response.write('something', 'utf8', () =>{
-    response.end();
+/*The http server will respond to the POST request with an http response code 200, content type of `application/json`, and content body of `{ "success" : true }`
+*/response.write('something', 'utf8', () =>{
+  response.end();
   });
+
 
 });
 
