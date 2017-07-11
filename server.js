@@ -12,7 +12,14 @@ const server = http.createServer((request, response) => {
     body.push(chunk);
   }).on('end', () =>{
 
+    //get method somehow
     //add branching here for different methods and enclose bottom under POST
+
+    //for GET: check if file exists
+      //if so, get and return page
+      //else return 404 error page.
+
+    //might need to adjust response and its .write for this.
 
     var elements = querystring.parse(body[0]);
     var elementWebPage = `<!DOCTYPE html><html lang="en">
