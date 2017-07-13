@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 const http = require('http');
-const  fs = require('fs');
+const fs = require('fs');
 const querystring = require('querystring');
 const process = require('process');
 
@@ -11,9 +11,10 @@ function updateIndexPage( fileName ){
     for( var i = 0; i < files.length; i++ ){
       console.log( files[ i ]);
       if( ignorePages.indexOf( files[ i ] ) === -1 ){
+        let element = files[ i ];
         indexOfPages +=
         `<li>
-          <a href="/${ files[ i ] }">${ files[ i ] }</a>
+          <a href="/${ files[ i ] }">${ element.slice( 0, element.length - 5 ) }</a>
         </li>`;
       }
     }
@@ -73,7 +74,8 @@ const server = http.createServer((request, response) => {
         break;
       case 'POST':
         var elements = querystring.parse(body[0]);
-        var elementWebPage = `<!DOCTYPE html><html lang="en">
+        var elementWebPage =
+        `<!DOCTYPE html><html lang="en">
         <head>
           <meta charset="UTF-8">
           <title>The Elements - ${elements.elementName}</title>
@@ -110,7 +112,6 @@ const server = http.createServer((request, response) => {
         console.log( 'other' );
         break;
     }
-
   });
 });
 
