@@ -71,6 +71,7 @@ As new html pages are created, more content will be available.
 
 If a resource path (url) does not exist, return a 404 response code and render the html contents of `404.html`
 
+
 ### Auto Updating Index
 
 Each time a new resource is created (via POST), update the `index.html` file to reflect the newly created page.
