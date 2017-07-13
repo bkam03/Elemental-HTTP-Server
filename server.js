@@ -14,16 +14,20 @@ const server = http.createServer((request, response) => {
     var fileName = request.url;
     switch( request.method ) {
       case 'GET':
-        //for GET: check if file exists
         fs.open(`./public/${fileName}`, 'r', (err) => {
           if(err){
             console.log( '@@@@@@@' );
-            //handle file doesnt exist here
-            //return 404 error page.
+            response.writeHead(404, 'Not Found', {
+                'Content-Type': 'application/json',
+            });
+            fs.readFile( './public/404.html', function( err, data ){
+              response.write(`${data}`, 'utf8', () =>{
+                response.end();
+              });
+            } );
           }else{
-            //get and return page
             console.log( 'page exists' );
-            let fileBeingRead = fs.readFile( `./public/${fileName}`, function( err, data ){
+            fs.readFile( `./public/${fileName}`, function( err, data ){
               console.log( data.toString() );
               response.writeHead(200, 'Successful', {
                 'Content-Type': 'application/json',
