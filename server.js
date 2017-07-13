@@ -48,9 +48,11 @@ const server = http.createServer((request, response) => {
     });
   });
 
-/*The http server will respond to the POST request with an http response code 200, content type of `application/json`, and content body of `{ "success" : true }`
-*/response.write('something', 'utf8', () =>{
-  response.end();
+  response.writeHead(200, 'Successful', {
+    'Content-Type': 'application/json',
+  });
+  response.write(`{ "success" : true }`, 'utf8', () =>{
+    response.end();
   });
 
 
