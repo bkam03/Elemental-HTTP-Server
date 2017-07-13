@@ -4,10 +4,44 @@ const  fs = require('fs');
 const querystring = require('querystring');
 const process = require('process');
 
+function updateIndexPage( fileName ){
+  let ignorePages = [ '.keep', '404.html', 'index.html' ];
+  let pages = fs.readdir( './public', function( err, files ){
+    let indexOfPages = '';
+    for( var i = 0; i < files.length; i++ ){
+      console.log( files[ i ]);
+      if( ignorePages.indexOf( files[ i ] ) === -1 ){
+        indexOfPages +=
+        `<li>
+          <a href="/${ files[ i ] }">${ files[ i ] }</a>
+        </li>`;
+      }
+    }
+    let indexHTML =
+    `<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>The Elements</title>
+        <link rel="stylesheet" href="/css/styles.css">
+      </head>
+      <body>
+        <h1>The Elements</h1>
+        <h2>These are all the known elements.</h2>
+        <h3>There are ${ files.length - 3 }</h3>
+        <ol>
+          ${ indexOfPages }
+        </ol>
+      </body>
+    </html>`;
+    fs.writeFile(`./public/index.html`, indexHTML, function(){
+    } );
+  } );
+}
+
 const server = http.createServer((request, response) => {
-  const { headers, method, url } = request;
   request.setEncoding('utf8');
-  let body = [];
+  var body = [];
   request.on('data', (chunk) => {
     body.push(chunk);
   }).on('end', () =>{
@@ -16,7 +50,6 @@ const server = http.createServer((request, response) => {
       case 'GET':
         fs.open(`./public/${fileName}`, 'r', (err) => {
           if(err){
-            console.log( '@@@@@@@' );
             response.writeHead(404, 'Not Found', {
                 'Content-Type': 'application/json',
             });
@@ -25,10 +58,9 @@ const server = http.createServer((request, response) => {
                 response.end();
               });
             } );
-          }else{
+          } else{
             console.log( 'page exists' );
             fs.readFile( `./public/${fileName}`, function( err, data ){
-              console.log( data.toString() );
               response.writeHead(200, 'Successful', {
                 'Content-Type': 'application/json',
               });
@@ -36,13 +68,8 @@ const server = http.createServer((request, response) => {
                 response.end();
               });
             } );
-
-
           }
         });
-
-        //might need to adjust response and its .write for this.
-        console.log( 'GET method' );
         break;
       case 'POST':
         var elements = querystring.parse(body[0]);
@@ -63,19 +90,21 @@ const server = http.createServer((request, response) => {
 
         fs.open(`./public/${fileName}`, 'r', (err) => {
           if(err){
-            console.log(err);
-            fs.writeFile(`./public/${fileName}`, elementWebPage, () =>{
-            });
+            console.log( 'new file' );
+            fs.writeFile(`./public/${fileName}`, elementWebPage, function(){
+              response.writeHead(200, 'Successful', {
+                'Content-Type': 'application/json',
+              });
+              response.write(`{ "success" : true }`, 'utf8', () =>{
+                response.end();
+              });
+            } );
+
           }else{
             console.log('file already exists');
           }
         });
-        response.writeHead(200, 'Successful', {
-          'Content-Type': 'application/json',
-        });
-        response.write(`{ "success" : true }`, 'utf8', () =>{
-          response.end();
-        });
+        updateIndexPage( fileName );
         break;
       default:
         console.log( 'other' );
@@ -83,10 +112,6 @@ const server = http.createServer((request, response) => {
     }
 
   });
-
-
-
-
 });
 
 server.listen(8080, () =>{
